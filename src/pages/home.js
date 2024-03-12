@@ -97,10 +97,12 @@ function Home(){
     </div>
 
     <div className="container mt-4">
-      <p>
+      {
+      data["text"] && <p>
       {data["text"]}
       </p>
-    </div>
+      }
+      </div>
 
   </div>
   
