@@ -28,7 +28,6 @@ function Home(){
 
       } )},
       headers:{
-        "customheader" : "value",
         "Content-Type": "multipart/form-data",
       },
 
