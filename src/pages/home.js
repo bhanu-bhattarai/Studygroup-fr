@@ -34,14 +34,13 @@ function Home(){
 
     })
     .then(async(res) => {
-      setMsg("Upload successful");
-      setData(JSON.parse(JSON.stringify(res.data)))
-      console.log(res.data)
       await axios.get('http://127.0.0.1:8000/build-doc/',{
         headers:{
           "Content-Type": "application/json",
         },
       })
+      setMsg("Upload successful");
+      setData(JSON.parse(JSON.stringify(res.data)))
     })
     .catch(err => {
       setMsg("Upload Failed");
