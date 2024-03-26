@@ -22,7 +22,7 @@ const CreateProject = () => {
     const [projectTemplate, setProjectTemplate] = useState('');
     const [file, setFile] = useState(null);
 
-    const handleCreateProject = () => {
+    const handleCreateProject = async () => {
         const fd = new FormData();
         fd.append('pdf_file', file);
         fd.append('description', projectDescription);
@@ -39,11 +39,12 @@ const CreateProject = () => {
             projectLead: projectLead,
         }
         projectData.push(project);
-        axios.post('http://127.0.0.1:8000/create-project/', fd, {
+        await axios.post('http://127.0.0.1:8000/create-project/', fd, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         })
+        window.location.href = '/projects'
     };
 
     return (
