@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react'
 import handleDownload from '../../Components/Download';
 import './Index.css'
 import { Link } from 'react-router-dom';
-import projectData from './DummyProjects';
+import axios from "axios";
+
 import {
     Table,
     TableBody,
@@ -23,9 +25,9 @@ const columns = [
 ];
 
 const ProjectHeader = () => {
-
     const [orderBy, setOrderBy] = useState('title');
     const [order, setOrder] = useState('asc');
+    const [projectData, setProjectData] = useState([]);
 
     const handleSort = (columnId) => {
         if (orderBy === columnId) {
@@ -36,7 +38,24 @@ const ProjectHeader = () => {
         }
     };
 
-    const sortedProjects = projectData.sort((a, b) => {
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/list-projects/', {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            responseType: 'json',
+        })
+            .then(res => {
+                console.log(res.data)
+                setProjectData(res.data.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }, []);
+    console.log("data is the " + projectData)
+
+    const sortedProjects = [...projectData].sort((a, b) => {
         const aValue = a[orderBy];
         const bValue = b[orderBy];
         return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
@@ -49,7 +68,7 @@ const ProjectHeader = () => {
                 color="primary"
                 component={Link}
                 to="/create"
-                style={{ marginBottom: '16px', marginLeft: '1300px' }}
+                style={{ marginBottom: '16px', marginLeft: '1200px' }}
             >
                 Add Project
             </Button>

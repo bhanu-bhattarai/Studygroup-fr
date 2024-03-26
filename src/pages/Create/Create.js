@@ -25,13 +25,12 @@ const CreateProject = () => {
     const handleCreateProject = () => {
         const fd = new FormData();
         fd.append('pdf_file', file);
-        fd.append('projectDescription', projectDescription);
-        fd.append('projectStatus', projectStatus);
+        fd.append('description', projectDescription);
+        fd.append('status', projectStatus);
         fd.append('projectLead', projectLead);
-        fd.append('projectTemplate', projectTemplate);
-        fd.append('projectTitle', projectTitle);
+        fd.append('template', projectTemplate);
+        fd.append('title', projectTitle);
         fd.append('clientName', clientName);
-        fd.append('projectTitle', projectTitle);
         const project = {
             id: 3,
             title: projectTitle,
