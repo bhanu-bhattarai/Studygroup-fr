@@ -75,29 +75,39 @@ function Home() {
   return (
 
     <div className="container mt-4">
-      <div className="main">
-        <div>
-          <h5 className="mb-4">  Select File to upload  </h5>
+    <div className="main">
+    <div>
+    <h1 className="mb-4"> <b> Botree Inc. </b> </h1>
+    <h5 className="mb-4">  Select File to upload  </h5>
 
-          <div className="mb-3">
-
-            <input onChange={(e) => { setFile(e.target.files[0]) }} type="file" />
-
-            <button onClick={handleUpload}>Upload</button>
-          </div>
-          <br />
-
-          {progress.started && <progress max='100' value={progress.pc} ></progress>}
-          <br />
-          {msg && <span>{msg}</span>}
-          <br />
-          <br />
-        </div>
-        <div>
-          {(msg && msg === "Upload successful")}
-        </div>
-      </div>
+    <div className="mb-3">
+    
+    <input onChange={ (e) => {setFile(e.target.files[0]) }} type="file" />
+    
+    <button onClick={ handleUpload }>Upload</button>
     </div>
+    <br/>
+
+    {progress.started && <progress max='100' value={progress.pc} ></progress>}
+    <br/>
+    {msg && <span>{msg}</span>}
+    <br/>
+    <br/>
+    </div>
+    <div>
+    {(msg && msg === "Upload successful") && <button className="btn btn-dark" onClick={ handleDownload }>Download</button>}
+    </div>
+    </div>
+
+    <div className="container mt-4">
+      {
+      data["text"] && <p>
+      {data["text"]}
+      </p>
+      }
+      </div>
+
+  </div>
 
   );
 }
