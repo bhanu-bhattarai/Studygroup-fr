@@ -14,7 +14,7 @@ const Navbar = () => {
         <Button color="inherit" component={Link}
           to="/projects" style={{ margin: '0 auto' }}>Projects</Button>
         <Button color="inherit" component={Link}
-          to="/home" style={{ margin: '0 auto' }}>Templates</Button>
+          to="/home" style={{ margin: '0 auto' }}>Direct Template</Button>
       </Toolbar>
     </AppBar>
   );

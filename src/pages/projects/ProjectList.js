@@ -91,7 +91,7 @@ const ProjectHeader = () => {
                     </TableHead>
                     <TableBody>
                         {sortedProjects.map((project) => (
-                            <TableRow key={project.id}>
+                            <TableRow key={project._id}>
                                 {columns.map((column) => (
                                     <TableCell key={column.id}>{project[column.id]}</TableCell>
                                 ))}
@@ -100,14 +100,17 @@ const ProjectHeader = () => {
                                         variant="contained"
                                         color="primary"
                                         component={Link}
-                                        to="/details"
+                                        to={{
+                                            pathname: "/details",
+                                            search: `?id=${project._id}`
+                                        }}
                                     >
                                         View
                                     </Button>
                                     <Button
                                         variant="text"
-                                        color="inherit"
-                                        onClick={() => handleDownload(project.id)}
+                                        color="primary"
+                                        onClick={() => handleDownload(project._id)}
                                     >
                                         Download
                                     </Button>

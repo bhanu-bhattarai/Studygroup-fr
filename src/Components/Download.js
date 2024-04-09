@@ -1,7 +1,7 @@
 //import { useState } from "react";
 import axios from "axios";
-function handleDownload() {
-    axios.get('http://127.0.0.1:8000/download-doc/', {
+function handleDownload(project_id) {
+    axios.get(`http://127.0.0.1:8000/download-doc/${project_id}/`, {
         headers: {
             "Content-Type": "application/json",
         },
