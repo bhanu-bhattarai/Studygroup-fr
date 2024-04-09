@@ -34,7 +34,7 @@ const ProjectDisplay = () => {
             })
     }, [id]);
     console.log("data is the " + project)
-    const { _id, title, description, status, project_lead, client_name, builds } = project;
+    const { title, description, status, project_lead, client_name, builds } = project;
 
     return (
         <Container>
