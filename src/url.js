@@ -1,0 +1,11 @@
+export const APP_BASE_URL = "http://127.0.0.1:8080/api";
+export const FILE_UPLOAD = '/file-upload/';
+export const CREATE_PROJECT = "/projects/add";
+export const LIST_PROJECT = "/projects/list";
+export const VIEW_PROJECT = "";
+export const BUILD_DOC = "/build-doc/";
+export const DOWNLOAD_DOC = "/download-doc/";
+export const SIGNUP_ENDPOINT = "/sign-up";
+export const LIST_PROJECT_TASKS = "/tasks/list";
+export const CREATE_TASK = "/tasks/add";
+export const UPDATE_TASK_STATUS = "task/update";

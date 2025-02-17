@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { APP_BASE_URL, CREATE_PROJECT } from '../../url';
 import {
     TextField,
     Button,
@@ -13,27 +14,26 @@ import {
 const CreateProject = () => {
     const [projectTitle, setProjectTitle] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
-    const [projectLead, setProjectLead] = useState('');
-    const [clientName, setClientName] = useState('');
-    const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleCreateProject = async () => {
         setLoading(true);
-        const fd = new FormData();
-        fd.append('pdf_file', file);
-        fd.append('description', projectDescription);
-        fd.append('status', "Completed");
-        fd.append('project_lead', projectLead);
-        fd.append('title', projectTitle);
-        fd.append('clientName', clientName);
-        await axios.post('http://127.0.0.1:8000/create-project/', fd, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        setLoading(false);
-        window.location.href = '/projects'
+        const data = {
+            name: projectTitle,
+            description: projectDescription
+        };
+        try {
+            await axios.post(`${APP_BASE_URL}${CREATE_PROJECT}`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            window.location.href = '/projects';
+        } catch (error) {
+            console.error("Error creating project:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -46,12 +46,12 @@ const CreateProject = () => {
             {!loading && (
                 <>
                     <Typography variant="h4" gutterBottom>
-                        Create a New Project
+                        Create a New Group
                     </Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <TextField
-                                label="Project Title"
+                                label="Title"
                                 fullWidth
                                 value={projectTitle}
                                 onChange={(e) => setProjectTitle(e.target.value)}
@@ -59,7 +59,7 @@ const CreateProject = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                label="Project Description"
+                                label="Description"
                                 fullWidth
                                 multiline
                                 rows={4}
@@ -68,33 +68,12 @@ const CreateProject = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                label="Project Lead"
-                                fullWidth
-                                value={projectLead}
-                                onChange={(e) => setProjectLead(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="Client Name"
-                                fullWidth
-                                value={clientName}
-                                onChange={(e) => setClientName(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <label htmlFor="project-template-upload">Upload Project Template&nbsp;</label>
-                            <input onChange={(e) => { setFile(e.target.files[0]) }} type="file" accept=".pdf"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleCreateProject}
                             >
-                                Create Project
+                                Create
                             </Button>
                         </Grid>
                     </Grid>

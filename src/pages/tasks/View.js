@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import handleDownload from '../../Components/Download';
-import './Index.css'
-import { Link } from 'react-router-dom';
-import axios from "axios";
-import { APP_BASE_URL, LIST_PROJECT } from '../../url';
-
+import { useLocation, Link } from 'react-router-dom';
+import axios from 'axios';
+import { APP_BASE_URL, LIST_PROJECT_TASKS, UPDATE_TASK_STATUS } from '../../url';
 import {
     Table,
     TableBody,
@@ -21,12 +18,15 @@ const columns = [
     { id: 'name', label: 'Name' },
     { id: 'statusText', label: 'Status' },
     { id: 'description', label: 'Description' },
+    { id: 'due_date', label: 'Due Date' }
 ];
 
-const ProjectHeader = () => {
+const ViewTask = () => {
+    const query = new URLSearchParams(useLocation().search);
+    const projectId = query.get('projectId');
     const [orderBy, setOrderBy] = useState('name');
     const [order, setOrder] = useState('asc');
-    const [projectData, setProjectData] = useState([]);
+    const [taskData, setTaskData] = useState([]);
 
     const handleSort = (columnId) => {
         if (orderBy === columnId) {
@@ -38,23 +38,62 @@ const ProjectHeader = () => {
     };
 
     useEffect(() => {
-        axios.get(`${APP_BASE_URL}${LIST_PROJECT}`, {
+        if (projectId) {
+            axios.get(`${APP_BASE_URL}${LIST_PROJECT_TASKS}?projectId=${projectId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                responseType: 'json',
+            })
+                .then(res => {
+                    console.log(res.data);
+                    setTaskData(res.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }, [projectId]);
+
+    const handleStatusUpdate = (task) => {
+        let newStatus;
+        if (task.status === 0) {
+            newStatus = 1; // Update from To-Do to In Progress
+        } else if (task.status === 1) {
+            newStatus = 2; // Update from In Progress to Completed
+        } else {
+            return;
+        }
+
+        axios.post(`${APP_BASE_URL}${UPDATE_TASK_STATUS}`, { id: task.id, status: newStatus }, {
             headers: {
                 "Content-Type": "application/json",
             },
-            responseType: 'json',
         })
             .then(res => {
-                console.log(res.data)
-                setProjectData(res.data)
+                console.log(res.data);
+                // Update the local state to reflect the status change
+                setTaskData(taskData.map(t => t.id === task.id ? { ...t, status: newStatus, statusText: getStatusText(newStatus) } : t));
             })
             .catch(err => {
-                console.error(err)
-            })
-    }, []);
-    console.log("data is the " + projectData)
+                console.error(err);
+            });
+    };
 
-    const sortedProjects = [...projectData].sort((a, b) => {
+    const getStatusText = (status) => {
+        switch (status) {
+            case 0:
+                return 'To-Do';
+            case 1:
+                return 'In Progress';
+            case 2:
+                return 'Completed';
+            default:
+                return 'Unknown';
+        }
+    };
+
+    const sortedTasks = [...taskData].sort((a, b) => {
         const aValue = a[orderBy];
         const bValue = b[orderBy];
         return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
@@ -66,10 +105,13 @@ const ProjectHeader = () => {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to="/create"
+                to={{
+                    pathname: "/tasks/create",
+                    search: `?projectId=${projectId}`
+                }}
                 style={{ marginBottom: '16px', marginLeft: '1200px' }}
             >
-                Add Project
+                Add Task
             </Button>
             <TableContainer component={Paper}>
                 <Table>
@@ -89,31 +131,27 @@ const ProjectHeader = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sortedProjects.map((project) => (
-                            <TableRow key={project.id}>
+                        {sortedTasks.map((task) => (
+                            <TableRow key={task.id}>
                                 {columns.map((column) => (
-                                    <TableCell key={column.id}>{project[column.id]}</TableCell>
+                                    <TableCell key={column.id}>{task[column.id]}</TableCell>
                                 ))}
                                 <TableCell>
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        component={Link}
-                                        to={{
-                                            pathname: "/tasks/",
-                                            search: `?projectId=${project.id}`
-                                        }}
+                                        onClick={() => handleStatusUpdate(task)}
                                     >
-                                        View
+                                        {task.status === 0 ? 'Start' : task.status === 1 ? 'Complete' : 'Completed'}
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer >
+            </TableContainer>
         </div>
     );
 };
 
-export default ProjectHeader;
+export default ViewTask;

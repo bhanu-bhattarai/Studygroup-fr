@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '../../Components/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
+import { Typography, Link } from '@material-ui/core';
 import * as Yup from 'yup';
 import PwdField from '../../Components/PwdField';
 import logo from '../../Icons/icon.png';
@@ -67,6 +67,19 @@ function Login(props) {
                                                 variant='contained'>
                                                 Login
                                             </Button>
+                                        </Box>
+                                        <Box mt={2} textAlign='center'>
+                                            <Link href='/forgot-password' variant='body2'>
+                                                Forgot Password?
+                                            </Link>
+                                        </Box>
+                                        <Box mt={2} textAlign='center'>
+                                            <Typography variant='body2' color='textSecondary'>
+                                                Don't have an account?
+                                            </Typography>
+                                            <Link href='/signup' variant='body2'>
+                                                Sign Up
+                                            </Link>
                                         </Box>
                                     </Form>
                                 )}

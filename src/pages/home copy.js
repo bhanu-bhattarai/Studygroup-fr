@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 //import { useState } from "react";
 import axios from "axios";
+import { APP_BASE_URL, FILE_UPLOAD } from '../url';
 
 function Home() {
 
@@ -21,7 +22,7 @@ function Home() {
     setProgress(prevState => {
       return { ...prevState, started: true }
     });
-    axios.post('http://127.0.0.1:8000/file-upload/', fd, {
+    axios.post(`${APP_BASE_URL}${FILE_UPLOAD}`, fd, {
       onUploadProgress: (ProgressEvent) => {
         setProgress(prevState => {
           return { ...prevState, pc: ProgressEvent.progress * 100 }

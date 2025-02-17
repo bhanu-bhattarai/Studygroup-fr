@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+import { APP_BASE_URL, FILE_UPLOAD } from '../../url';
 
 const axios = require('axios');
 
@@ -28,7 +29,7 @@ class FileUpload extends React.Component {
         );
 
         // Send formData object
-        axios.post("http://127.0.0.1:8000/file-upload/", formData);
+        axios.post(`${APP_BASE_URL}${FILE_UPLOAD}`, formData);
     };
 
     render() {

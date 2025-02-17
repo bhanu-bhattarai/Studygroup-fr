@@ -8,18 +8,17 @@ import {
     Button,
 } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';  // Import axios
+import axios from 'axios';
+import { APP_BASE_URL, VIEW_PROJECT } from '../../url';
 
 const ProjectDisplay = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    console.log(searchParams)
     const id = searchParams.get('id');
-    console.log("search_param_id" + searchParams)
 
     const [project, setProjectData] = useState([]);
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/list-project?id=${id}`, {
+        axios.get(`${APP_BASE_URL}${VIEW_PROJECT}?id=${id}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -33,7 +32,6 @@ const ProjectDisplay = () => {
                 console.error(err)
             })
     }, [id]);
-    console.log("data is the " + project)
     const { title, description, status, project_lead, client_name, builds } = project;
 
     return (

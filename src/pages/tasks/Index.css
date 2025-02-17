@@ -1,0 +1,10 @@
+/* Add this to your CSS file */
+.tablehead {
+    font-weight: bold;
+    color: #4caf50;
+    /* Green color for headers */
+}
+
+.MuiPaper-root {
+    box-shadow: none;
+}

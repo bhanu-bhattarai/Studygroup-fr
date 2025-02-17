@@ -2,6 +2,7 @@ import React, { useState } from "react";
 //import { useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { APP_BASE_URL, FILE_UPLOAD, BUILD_DOC, DOWNLOAD_DOC } from '../url';
 
 function Home() {
 
@@ -22,7 +23,7 @@ function Home() {
     setProgress(prevState => {
       return { ...prevState, started: true }
     });
-    axios.post('http://127.0.0.1:8000/file-upload/', fd, {
+    axios.post(`${APP_BASE_URL}${FILE_UPLOAD}`, fd, {
       onUploadProgress: (ProgressEvent) => {
         setProgress(prevState => {
           return { ...prevState, pc: ProgressEvent.progress * 100 }
@@ -34,7 +35,7 @@ function Home() {
       },
     })
       .then(async (res) => {
-        await axios.get('http://127.0.0.1:8000/build-doc/', {
+        await axios.get(`${APP_BASE_URL}${BUILD_DOC}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -49,7 +50,7 @@ function Home() {
   }
 
   function handleDownload() {
-    axios.get('http://127.0.0.1:8000/download-doc/', {
+    axios.get(`${APP_BASE_URL}${DOWNLOAD_DOC}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -76,7 +77,7 @@ function Home() {
     <div className="container mt-4">
       <div className="main">
         <div>
-          <h1 className="mb-4"> <b> Botree Inc. </b> </h1>
+          <h1 className="mb-4"> <b> StudyGroup Inc. </b> </h1>
           <h5 className="mb-4">  Select File to upload  </h5>
 
           <div className="mb-3">
