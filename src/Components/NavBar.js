@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import logo from '../Icons/icon.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NotificationMenu from './notification/Notification';
 
 const Navbar = () => {
-  // State to manage login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate(); // To handle navigation
 
-  // Function to handle login (You can update this with your actual login logic)
-  const handleLogin = () => {
-    setIsLoggedIn(true);
+  // Check login status from localStorage on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token); // If token exists, set isLoggedIn to true
+  }, []);
+
+  // Function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear token from localStorage
+    localStorage.removeItem('userId'); // Clear userId from localStorage
+    setIsLoggedIn(false); // Update state
+    navigate('/login'); // Redirect to login page
   };
 
   return (
@@ -20,8 +29,35 @@ const Navbar = () => {
           <img src={logo} alt="Study group" style={{ height: '80px' }} />
         </Typography>
         {isLoggedIn && <NotificationMenu />}
-        {isLoggedIn && <Button color="inherit" component={Link} to="/projects" style={{ margin: '0 auto' }}>Projects</Button>}
-        {!isLoggedIn && <Button color="inherit" component={Link} to="/login" style={{ margin: '0 auto' }} onClick={handleLogin}>login</Button>}
+        {isLoggedIn && (
+          <>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/projects"
+              style={{ margin: '0 auto' }}
+            >
+              Projects
+            </Button>
+            <Button
+              color="inherit"
+              style={{ margin: '0 auto' }}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </>
+        )}
+        {!isLoggedIn && (
+          <Button
+            color="inherit"
+            component={Link}
+            to="/login"
+            style={{ margin: '0 auto' }}
+          >
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

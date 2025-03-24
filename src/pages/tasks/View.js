@@ -65,7 +65,7 @@ const ViewTask = () => {
             return;
         }
 
-        axios.post(`${APP_BASE_URL}${UPDATE_TASK_STATUS}`, { id: task.id, status: newStatus }, {
+        axios.put(`${APP_BASE_URL}${UPDATE_TASK_STATUS}`, { task_id: task.id, status: newStatus }, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -143,6 +143,19 @@ const ViewTask = () => {
                                         onClick={() => handleStatusUpdate(task)}
                                     >
                                         {task.status === 0 ? 'Start' : task.status === 1 ? 'Complete' : 'Completed'}
+                                    </Button>
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        component={Link}
+                                        to={{
+                                            pathname: "/tasks/comments/",
+                                            search: `?taskId=${task.id}`
+                                        }}
+                                    >
+                                        Comments
                                     </Button>
                                 </TableCell>
                             </TableRow>
