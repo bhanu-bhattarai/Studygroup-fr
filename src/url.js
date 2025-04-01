@@ -1,4 +1,4 @@
-export const APP_BASE_URL = "http://127.0.0.1:8080/api";
+export const APP_BASE_URL = "https://studeygroup-be.onrender.com/api";
 export const FILE_UPLOAD = '/file-upload/';
 export const CREATE_PROJECT = "/projects/add";
 export const LIST_PROJECT = "/projects/list";
